@@ -20,7 +20,7 @@
     "horwood-server": "./src/cli.js"
   },
   "author": "lnh",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.11.1",
