@@ -5,7 +5,7 @@ const path = require('path');
 const BUILD_DIR = path.resolve(__dirname, 'dist');
 
 gulp.task('default', () => {
-    return gulp.src(['./package.json', './LICENSE'])
+    return gulp.src(['./package.json', './LICENSE', './README.md'])
         .pipe(gulp.dest(BUILD_DIR))
         .pipe(install({
             npm: ['--production']
