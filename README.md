@@ -10,12 +10,12 @@ $ npm install @horwood/server
 ### Running via the CLI
 In order to run the server from the CLI, you simply use the name of the package:
 ```bash
-$ @horwood/server
+$ horwood-server
 ```
 The server must be provided with a server.conf module in order to function. By default, it looks in the root directory 
 of your project for a module named `server.conf`. If you wish to override this, you can use the following command:
 ```bash
-$ @horwood/server --server-conf=./path/to/server.conf
+$ horwood-server --server-conf=./path/to/server.conf
 ```
 
 ### Running Programmatically
