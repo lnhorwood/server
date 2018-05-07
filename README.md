@@ -8,7 +8,7 @@ It is available through the NPM registry by using the following command:
 $ npm install @horwood/server
 ```
 ### Running via the CLI
-In order to run the server from the CLI, you simply use the name of the package:
+In order to run the server from the CLI, run:
 ```bash
 $ horwood-server
 ```
