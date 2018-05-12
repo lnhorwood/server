@@ -11,7 +11,7 @@ pipelines:
         name: Push to GitHub
         script:
           - git remote add github git@github.com:lnhorwood/server.git
-          - git push github master
+          - git push github master --follow-tags
   custom: 
     publish:
       - step:
