@@ -23,5 +23,4 @@ pipelines:
             - git config user.email "${GIT_EMAIL}"
             - git config user.name "Luke Horwood"
             - npm run release
-            - git remote add bitbucket git@bitbucket.org:horwood/server.git
-            - git push bitbucket master
+            - git push origin master
