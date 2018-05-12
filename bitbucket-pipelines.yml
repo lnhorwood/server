@@ -12,3 +12,12 @@ pipelines:
         script:
           - git remote add github git@github.com:lnhorwood/server.git
           - git push github master
+  custom: 
+    publish:
+      - step:
+          name: Publish changes to NPM
+          image: node:latest
+          script:
+            - printf "//`node -p \"require('url').parse('https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\nscope=@horwood\n" >> ~/.npmrc
+            - npm install
+            - npm run release
