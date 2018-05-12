@@ -1,6 +1,6 @@
 {
   "name": "@horwood/server",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "This is a simple Node.js module that allows the user to quickly bootstrap a server utilising the Express framework.",
   "main": "index.js",
   "types": "index.d.ts",
