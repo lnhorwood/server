@@ -10,5 +10,5 @@ pipelines:
     - step:
         name: Push to GitHub
         script:
-          - git remote add github ssh://git@github.com:lnhorwood/server.git
+          - git remote add github git@github.com:lnhorwood/server.git
           - git push github master
