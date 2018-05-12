@@ -29,6 +29,7 @@ const server = new horwoodServer.Server(serverConf);
 ### Configuration
 Configuration should be provided using the following format:
 ```js
+const port = 8080;
 const serverConf = {
   'logConf': {
     'location': './logs',
@@ -44,12 +45,18 @@ const serverConf = {
       }
     }
   ],
-  'port': 8080,
+  'port': port,
   'prefix': '/api',
   'staticConf': {
       'prefix': '',
       'root': 'dist'
-  }
+  },
+  'proxies': [
+      {
+          'path': 'endpoints',
+          'destination': `http://localhost:${port}/api`
+      }
+  ]
 };
 module.exports = serverConf;
 ```
@@ -68,3 +75,6 @@ Valid configuration properties are listed below.
 | prefix            | The prefix to prepend all endpoints with.             |                                                 | /api    |
 | staticConf.prefix | The prefix to prepend to requests for static content. |                                                 |         |
 | staticConf.root   | The root of the static content.                       |                                                 |         |
+| proxies           | A list of proxies to be configured.                   |                                                 | []      |
+| proxy.path        | The path to use for the proxy.                        |                                                 |         |
+| proxy.destination | Where to send the request to when the path is hit.    |                                                 |         |

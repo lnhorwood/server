@@ -65,3 +65,5 @@ typings/
 
 # Build files
 dist
+
+bash.exe.stackdump

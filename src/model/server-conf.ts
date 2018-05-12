@@ -3,6 +3,8 @@ import {LogConf} from "./log-conf";
 import {Endpoint} from "./endpoint";
 import {StaticConf} from "./static-conf";
 import {EndpointDef} from "./endpoint-def";
+import {ProxyDef} from "./proxy-def";
+import {Proxy} from "./proxy";
 
 export class ServerConf implements ServerConfDef {
 
@@ -11,6 +13,7 @@ export class ServerConf implements ServerConfDef {
     private _port: number;
     private _prefix: string;
     private _staticConf: StaticConf;
+    private _proxies: ProxyDef[];
 
     constructor(serverConfDef: ServerConfDef) {
         this.logConf = new LogConf(serverConfDef.logConf);
@@ -20,6 +23,7 @@ export class ServerConf implements ServerConfDef {
         if (serverConfDef.staticConf) {
             this.staticConf = new StaticConf(serverConfDef.staticConf);
         }
+        this.proxies = (serverConfDef.proxies ? serverConfDef.proxies : []).map((proxyDef: ProxyDef) => new Proxy(proxyDef));
     }
 
     get logConf(): LogConf {
@@ -62,5 +66,12 @@ export class ServerConf implements ServerConfDef {
         this._staticConf = value;
     }
 
+    get proxies(): ProxyDef[] {
+        return this._proxies;
+    }
+
+    set proxies(value: ProxyDef[]) {
+        this._proxies = value;
+    }
 
 }
