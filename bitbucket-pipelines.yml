@@ -19,7 +19,7 @@ pipelines:
           image: node:latest
           script:
             - git reset --hard
-            - git checkout origin master
+            - git checkout master
             - printf "//`node -p \"require('url').parse('https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\nscope=@horwood\n" >> ~/.npmrc
             - npm install
             - git config user.email "${GIT_EMAIL}"
