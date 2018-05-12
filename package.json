@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npm run clean && tsc && gulp",
     "clean": "rimraf dist",
-    "publish": "npm run build && npm publish dist --access=public",
+    "publish": "npm version patch -m \"Upgrading to %s for release.\" && npm run build && npm publish dist --access=public",
     "serve": "cross-env NODE_ENV=development node dist/src/cli",
     "start": "npm run build && npm run serve",
     "unpublish": "npm -f unpublish"
