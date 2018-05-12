@@ -18,7 +18,8 @@ pipelines:
           name: Publish changes to NPM
           image: node:latest
           script:
-            - printf "//`node -p \"require('url').parse('https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\nscope=@horwood\n" >> ~/.npmrc
+            - git config user.signingkey ${GPG_KEY}
+            - printf "//`node -p \"require('url').parse('https://registry.npmjs.org').host\"`/:_authToken=${NPM_TOKEN}\nregistry=${NPM_REGISTRY_URL:-https://registry.npmjs.org}\nscope=@horwood\nsign-git-tag=true\n" >> ~/.npmrc
             - npm install
             - git config user.email "${GIT_EMAIL}"
             - git config user.name "Luke Horwood"
