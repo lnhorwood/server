@@ -24,4 +24,4 @@ pipelines:
             - git config user.name "Luke Horwood"
             - npm run release
             - git config push.default simple
-            - git push
+            - git push origin HEAD:master
