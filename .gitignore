@@ -65,5 +65,6 @@ typings/
 
 # Build files
 dist
+.npmrc
 
 bash.exe.stackdump
