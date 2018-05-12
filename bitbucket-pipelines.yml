@@ -22,5 +22,6 @@ pipelines:
             - npm install
             - git config user.email "${GIT_EMAIL}"
             - git config user.name "Luke Horwood"
+            - git status
             - npm run release
             - git push origin master
