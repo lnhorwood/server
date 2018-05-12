@@ -8,6 +8,7 @@
 pipelines:
   default:
     - step:
-        name: View remotes
+        name: Push to GitHub
         script:
-          - git remote -v
+          - git remote add github ssh://git@github.com:lnhorwood/server.git
+          - git push github master
