@@ -3,7 +3,7 @@ import {resolve} from "path";
 import {LogLevel} from "./log-level";
 
 const defaultLogConfDef: LogConfDef = {
-    location: resolve(process.env.PWD, 'logs'),
+    location: resolve( 'logs'),
     preserve: false,
     level: 'INFO'
 };

@@ -6,13 +6,13 @@
 # image: atlassian/default-image:latest
 
 pipelines:
-  branches:
-    master:
-      - step:
-          name: Push to GitHub
-          script:
-            - git remote add github git@github.com:lnhorwood/server.git
-            - git push github master --follow-tags
+  default:
+    - step:
+        name: Run unit tests
+        image: node:latest
+        script:
+          - npm install
+          - npm test
   custom: 
     publish:
       - step:
@@ -28,3 +28,8 @@ pipelines:
             - npm run build
             - npm publish dist --access=public
             - git push --follow-tags
+      - step:
+          name: Push to GitHub
+          script:
+            - git remote add github git@github.com:lnhorwood/server.git
+            - git push github master --follow-tags
