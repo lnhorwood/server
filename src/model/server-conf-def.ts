@@ -4,10 +4,10 @@ import {StaticConfDef} from "./static-conf-def";
 import {ProxyDef} from "./proxy-def";
 
 export interface ServerConfDef {
-    logConf: LogConfDef;
-    endpoints: EndpointDef[];
-    port: number;
-    prefix: string;
-    staticConf: StaticConfDef;
-    proxies: ProxyDef[];
+    logConf?: LogConfDef;
+    endpoints?: EndpointDef[];
+    port?: number;
+    prefix?: string;
+    staticConf?: StaticConfDef;
+    proxies?: ProxyDef[];
 }

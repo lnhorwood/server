@@ -14,7 +14,8 @@
     "release": "npm version patch -m \"Upgrading to %s for release.\" && npm run build && npm publish dist --access=public",
     "serve": "cross-env NODE_ENV=development node dist/src/cli",
     "start": "npm run build && npm run serve",
-    "unpublish": "npm -f unpublish"
+    "unpublish": "npm -f unpublish",
+    "test": "ts-node node_modules/jasmine/bin/jasmine JASMINE_CONFIG_PATH=jasmine.json"
   },
   "bin": {
     "horwood-server": "./src/cli.js"
@@ -24,12 +25,15 @@
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.11.1",
+    "@types/jasmine": "^2.8.7",
     "@types/node": "^10.0.4",
     "@types/rimraf": "^2.0.2",
     "@types/yargs": "^11.0.0",
     "cross-env": "^5.1.4",
     "gulp": "^3.9.1",
     "gulp-install": "^1.1.0",
+    "jasmine": "^3.1.0",
+    "ts-node": "^6.0.3",
     "typescript": "^2.8.3"
   },
   "dependencies": {
