@@ -56,7 +56,8 @@ const serverConf = {
           'path': 'endpoints',
           'destination': `http://localhost:${port}/api`
       }
-  ]
+  ],
+  'sockets': true
 };
 module.exports = serverConf;
 ```
@@ -78,3 +79,4 @@ Valid configuration properties are listed below.
 | proxies           | A list of proxies to be configured.                   |                                                 | []      |
 | proxy.path        | The path to use for the proxy.                        |                                                 |         |
 | proxy.destination | Where to send the request to when the path is hit.    |                                                 |         |
+| sockets           | A flag stating whether sockets should be enabled.     | true <br /> false                               | false   |
