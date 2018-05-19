@@ -19,11 +19,11 @@ $ horwood-server --server-conf=./path/to/server.conf
 ```
 
 ### Running Programmatically
-To run the server programmatically, you must create a new `Server` instance using a valid `ServerConf`.
+To run the server programmatically, you must call Server.start using a valid `ServerConf`.
 ```js
 const horwoodServer = require('@horwood/server');
 const serverConf = new horwoodServer.ServerConf(require('./server.conf'));
-const server = new horwoodServer.Server(serverConf);
+Server.start(serverConf);
 ``` 
 
 ### Configuration
