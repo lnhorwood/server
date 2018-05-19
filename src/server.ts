@@ -1,5 +1,8 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
+import * as socketIo from 'socket.io';
+import * as http from 'http';
+import * as httpShutdown from 'http-shutdown';
 
 import {ServerConf} from './model/server-conf';
 import {Logger} from './logger';
@@ -11,40 +14,65 @@ import {URL} from './url';
 
 export class Server {
 
-    private serverConf: ServerConf;
-    private app: express.Application;
+    private static _serverConf: ServerConf;
+    private static _app: express.Application;
+    private static _http: httpShutdown.Server;
+    private static _io: socketIo.Server;
 
-    constructor(serverConf: ServerConf) {
-        this.serverConf = serverConf;
-        this.configureLogger();
-        this.configureServer();
+    static start(_serverConf: ServerConf) {
+        if (!Server._http) {
+            Server._serverConf = _serverConf;
+            Server.configureLogger();
+            Server.configureServer();
+        } else {
+            Logger.error('Tried to start a HTTP server but a server is already running.');
+        }
     }
 
-    private configureLogger(): void {
-        Logger.configure(this.serverConf.logConf);
+    static shutdown() {
+        if (Server._http) {
+            Server._http.shutdown();
+            delete Server._http;
+            delete Server._io;
+            delete Server._app;
+        } else {
+            Logger.error('Tried to shutdown HTTP server but no server was running.');
+        }
     }
 
-    private configureServer(): void {
+    static get app(): express.Application {
+        return Server._app;
+    }
+
+    static get io(): socketIo.Server {
+        return Server._io;
+    }
+
+    private static configureLogger(): void {
+        Logger.configure(Server._serverConf.logConf);
+    }
+
+    private static configureServer(): void {
         Logger.info('Configuring server.');
         const router: express.Router = express.Router();
-        this.app = express();
-        this.app.use(bodyParser.urlencoded({
+        Server._app = express();
+        Server._app.use(bodyParser.urlencoded({
             extended: true
         }));
-        this.app.use(bodyParser.json());
+        Server._app.use(bodyParser.json());
         Logger.info('Mapping API endpoints.');
-        this.serverConf.endpoints.filter((endpoint: Endpoint) => endpoint.isValid()).forEach((endpoint: Endpoint) => {
+        Server._serverConf.endpoints.filter((endpoint: Endpoint) => endpoint.isValid()).forEach((endpoint: Endpoint) => {
             router[endpoint.method](endpoint.path, (req: Request, res: Response) => {
-                Logger.verbose(`Request: ${endpoint.method.toUpperCase()} - ${this.serverConf.prefix}${endpoint.path}`);
+                Logger.verbose(`Request: ${endpoint.method.toUpperCase()} - ${Server._serverConf.prefix}${endpoint.path}`);
                 endpoint.callback(req, res);
             });
-            Logger.info(`${endpoint.method.toUpperCase()} ${URL.join(this.serverConf.prefix, endpoint.path)} - Mapped successfully.`);
+            Logger.info(`${endpoint.method.toUpperCase()} ${URL.join(Server._serverConf.prefix, endpoint.path)} - Mapped successfully.`);
         });
         Logger.info('Finishing mapping API endpoints.');
         Logger.info('Mapping API proxies.');
-        this.serverConf.proxies.filter((proxy: Proxy) => proxy.isValid()).forEach((proxy: Proxy) => {
-            const from: string = URL.join(this.serverConf.prefix, proxy.path);
-            this.app.use(from, expressHttpProxy(proxy.destination, {
+        Server._serverConf.proxies.filter((proxy: Proxy) => proxy.isValid()).forEach((proxy: Proxy) => {
+            const from: string = URL.join(Server._serverConf.prefix, proxy.path);
+            Server._app.use(from, expressHttpProxy(proxy.destination, {
                 proxyReqPathResolver: (req: Request) => {
                     const destination: string = URL.concat(proxy.destination, req.url);
                     Logger.verbose(`Request: ${req.method} - ${URL.join(from, req.url)} proxied to ${destination}`);
@@ -54,15 +82,20 @@ export class Server {
             Logger.info(`Proxy created from ${from} to ${proxy.destination}.`);
         });
         Logger.info('Finished mapping API proxies.');
-        this.app.use(this.serverConf.prefix, router);
-        Logger.info(`API registered at http://localhost:${this.serverConf.port}${URL.join(this.serverConf.prefix)}.`);
-        if (this.serverConf.staticConf) {
-            this.app.use(this.serverConf.staticConf.prefix, express.static(this.serverConf.staticConf.root));
-            Logger.info(`Static content is being served at http://localhost:${this.serverConf.port}${URL.join(this.serverConf.staticConf.prefix)}`);
+        Server._app.use(Server._serverConf.prefix, router);
+        Logger.info(`API registered at http://localhost:${Server._serverConf.port}${URL.join(Server._serverConf.prefix)}.`);
+        if (Server._serverConf.staticConf) {
+            Server._app.use(Server._serverConf.staticConf.prefix, express.static(Server._serverConf.staticConf.root));
+            Logger.info(`Static content is being served at http://localhost:${Server._serverConf.port}${URL.join(Server._serverConf.staticConf.prefix)}`);
         } else {
             Logger.warn('No static content is being served.');
         }
-        this.app.listen(this.serverConf.port);
+        Server._http = httpShutdown(new http.Server(Server._app));
+        if (Server._serverConf.sockets) {
+            Server._io = socketIo(Server._http);
+            Logger.info('Sockets have been enabled.');
+        }
+        Server._http.listen(Server._serverConf.port);
         Logger.info('Open for business!');
     }
 
