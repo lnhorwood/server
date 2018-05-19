@@ -23,7 +23,7 @@ To run the server programmatically, you must call Server.start using a valid `Se
 ```js
 const horwoodServer = require('@horwood/server');
 const serverConf = new horwoodServer.ServerConf(require('./server.conf'));
-Server.start(serverConf);
+horwoodServer.Server.start(serverConf);
 ``` 
 
 ### Configuration
