@@ -16,7 +16,7 @@ pipelines:
   custom: 
     publish:
       - step:
-          name: Publish changes to NPM
+          name: Publish changes to NPM and GitHub
           image: node:latest
           script:
             - git checkout master
@@ -28,8 +28,5 @@ pipelines:
             - npm run build
             - npm publish dist --access=public
             - git push --follow-tags
-      - step:
-          name: Push to GitHub
-          script:
             - git remote add github git@github.com:lnhorwood/server.git
             - git push github master --follow-tags
