@@ -33,4 +33,4 @@ try {
     Logger.error(`Unable to find server.conf module at '${serverConfPath}'; please provide a valid server.conf module.`);
     process.exit(error.code);
 }
-new Server(new ServerConf(serverConf));
+Server.start(new ServerConf(serverConf));

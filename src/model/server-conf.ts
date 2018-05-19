@@ -14,6 +14,7 @@ export class ServerConf implements ServerConfDef {
     private _prefix: string;
     private _staticConf: StaticConf;
     private _proxies: ProxyDef[];
+    private _sockets: boolean;
 
     constructor(serverConfDef: ServerConfDef) {
         this.logConf = new LogConf(serverConfDef.logConf);
@@ -24,6 +25,7 @@ export class ServerConf implements ServerConfDef {
             this.staticConf = new StaticConf(serverConfDef.staticConf);
         }
         this.proxies = (serverConfDef.proxies ? serverConfDef.proxies : []).map((proxyDef: ProxyDef) => new Proxy(proxyDef));
+        this.sockets = serverConfDef.sockets === true;
     }
 
     get logConf(): LogConf {
@@ -72,6 +74,14 @@ export class ServerConf implements ServerConfDef {
 
     set proxies(value: ProxyDef[]) {
         this._proxies = value;
+    }
+
+    get sockets(): boolean {
+        return this._sockets;
+    }
+
+    set sockets(value: boolean) {
+        this._sockets = value;
     }
 
 }

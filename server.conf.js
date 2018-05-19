@@ -19,6 +19,7 @@ const serverConf = {
           destination: `http://localhost:${port}/api`
       }
   ],
-  'port': port
+  'port': port,
+  'sockets': true
 };
 module.exports = serverConf;

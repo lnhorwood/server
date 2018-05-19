@@ -10,4 +10,5 @@ export interface ServerConfDef {
     prefix?: string;
     staticConf?: StaticConfDef;
     proxies?: ProxyDef[];
+    sockets?: boolean;
 }
