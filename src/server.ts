@@ -93,6 +93,9 @@ export class Server {
         Server._http = httpShutdown(new http.Server(Server._app));
         if (Server._serverConf.sockets) {
             Server._io = socketIo(Server._http);
+            if (Server._serverConf.socketsCallback) {
+                Server._serverConf.socketsCallback(Server._io);
+            }
             Logger.info('Sockets have been enabled.');
         }
         Server._http.listen(Server._serverConf.port);

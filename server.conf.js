@@ -20,6 +20,11 @@ const serverConf = {
       }
   ],
   'port': port,
-  'sockets': true
+  'sockets': true,
+  'socketsCallback': (io) => {
+    io.on('connection', (socket) => {
+      socket.emit('testEvent');
+    });
+  }
 };
 module.exports = serverConf;

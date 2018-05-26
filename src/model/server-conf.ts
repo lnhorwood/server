@@ -5,6 +5,7 @@ import {StaticConf} from "./static-conf";
 import {EndpointDef} from "./endpoint-def";
 import {ProxyDef} from "./proxy-def";
 import {Proxy} from "./proxy";
+import * as socketIo from "socket.io";
 
 export class ServerConf implements ServerConfDef {
 
@@ -15,6 +16,7 @@ export class ServerConf implements ServerConfDef {
     private _staticConf: StaticConf;
     private _proxies: ProxyDef[];
     private _sockets: boolean;
+    private _socketsCallback: (io: socketIo.Server) => void;
 
     constructor(serverConfDef: ServerConfDef) {
         this.logConf = new LogConf(serverConfDef.logConf);
@@ -26,6 +28,7 @@ export class ServerConf implements ServerConfDef {
         }
         this.proxies = (serverConfDef.proxies ? serverConfDef.proxies : []).map((proxyDef: ProxyDef) => new Proxy(proxyDef));
         this.sockets = serverConfDef.sockets === true;
+        this.socketsCallback = serverConfDef.socketsCallback;
     }
 
     get logConf(): LogConf {
@@ -84,4 +87,11 @@ export class ServerConf implements ServerConfDef {
         this._sockets = value;
     }
 
+    get socketsCallback(): (io: socketIo.Server) => void {
+        return this._socketsCallback;
+    }
+
+    set socketsCallback(value: (io: socketIo.Server) => void) {
+        this._socketsCallback = value;
+    }
 }
