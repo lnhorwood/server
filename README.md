@@ -19,11 +19,11 @@ $ horwood-server --server-conf=./path/to/server.conf
 ```
 
 ### Running Programmatically
-To run the server programmatically, you must create a new `Server` instance using a valid `ServerConf`.
+To run the server programmatically, you must call Server.start using a valid `ServerConf`.
 ```js
 const horwoodServer = require('@horwood/server');
 const serverConf = new horwoodServer.ServerConf(require('./server.conf'));
-const server = new horwoodServer.Server(serverConf);
+horwoodServer.Server.start(serverConf);
 ``` 
 
 ### Configuration
@@ -56,7 +56,8 @@ const serverConf = {
           'path': 'endpoints',
           'destination': `http://localhost:${port}/api`
       }
-  ]
+  ],
+  'sockets': true
 };
 module.exports = serverConf;
 ```
@@ -78,3 +79,4 @@ Valid configuration properties are listed below.
 | proxies           | A list of proxies to be configured.                   |                                                 | []      |
 | proxy.path        | The path to use for the proxy.                        |                                                 |         |
 | proxy.destination | Where to send the request to when the path is hit.    |                                                 |         |
+| sockets           | A flag stating whether sockets should be enabled.     | true <br /> false                               | false   |
