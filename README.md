@@ -57,7 +57,12 @@ const serverConf = {
           'destination': `http://localhost:${port}/api`
       }
   ],
-  'sockets': true
+  'sockets': true,
+  'socketsCallback': (io) => {
+      io.on('connection', (socket) => {
+         socket.emit('testEvent'); 
+      });
+  }
 };
 module.exports = serverConf;
 ```
@@ -80,3 +85,4 @@ Valid configuration properties are listed below.
 | proxy.path        | The path to use for the proxy.                        |                                                 |         |
 | proxy.destination | Where to send the request to when the path is hit.    |                                                 |         |
 | sockets           | A flag stating whether sockets should be enabled.     | true <br /> false                               | false   |
+| socketsCallback   | A callback that is called when Socket IO is ready.    |                                                 |         |
